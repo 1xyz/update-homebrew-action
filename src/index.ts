@@ -50,14 +50,19 @@ async function run() {
     const templateString = (await readFile(fullTemplatePath)).toString()
     const template = handlebars.compile(templateString)
 
+    // get the metadata from GitHub
+    console.log("Preparing formula")
 
     // note: this excludes pre-releases
     const latestRelease = await octokit.request(`GET /repos/${srcRepo}/releases/latest`)
+    console.log("Fetched the latest release" + JSON.stringify(latestRelease))
 
     const version = latestRelease.data.tag_name
     const releaseId = latestRelease.data.id
+    console.log("version = " + JSON.stringify(latestRelease) + " releaseID = " + JSON.stringify(releaseId))
 
     const assets = await octokit.request(`GET /repos/${srcRepo}/releases/${releaseId}/assets`)
+    console.log("fetched assets: " + JSON.stringify(assets))
 
     // tarballUrl or zip URL
     const tarballUrl = find(assets.data, a => a.name.includes("darwin")).browser_download_url
