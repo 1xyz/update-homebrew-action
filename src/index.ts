@@ -61,7 +61,8 @@ async function run() {
 
     const assets = await octokit.request(`GET /repos/${srcRepo}/releases/${releaseId}/assets`)
 
-    const tarballUrl = find(assets.data, a => a.name.includes("macos")).browser_download_url
+    // tarballUrl or zip URL
+    const tarballUrl = find(assets.data, a => a.name.includes("darwin")).browser_download_url
     const sha256 = await getUrlChecksum(tarballUrl, "sha256")
 
     const formula = template({
@@ -83,7 +84,6 @@ async function run() {
       // // check if the formula is OK
       // console.log("Auditing formula")
       // await execa("brew", ["audit", formulaPath])
-
 
       console.log("Pushing to git")
       for (const args of [
