@@ -40241,13 +40241,17 @@ function run() {
             // tarballUrl or zip URL
             const tarballUrl = lodash_1.find(assets.data, a => a.name.includes("darwin")).browser_download_url;
             const sha256 = yield utils_1.getUrlChecksum(tarballUrl, "sha256");
+            console.log("browser download url " + JSON.stringify(tarballUrl));
+            console.log("checksum " + JSON.stringify(sha256));
             const formula = template({
                 version,
                 tarballUrl,
                 sha256,
             });
             const formulaPath = path_1.resolve(formulaDir, `${packageName}.rb`);
+            console.log("formulaPath: " + formulaPath);
             const existingFormula = (yield fs_extra_1.pathExists(formulaPath)) ? (yield fs_extra_1.readFile(formulaPath)).toString() : "";
+            console.log("existingFormula: " + existingFormula);
             if (formula === existingFormula) {
                 console.log("No changes to formula");
             }

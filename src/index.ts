@@ -67,6 +67,8 @@ async function run() {
     // tarballUrl or zip URL
     const tarballUrl = find(assets.data, a => a.name.includes("darwin")).browser_download_url
     const sha256 = await getUrlChecksum(tarballUrl, "sha256")
+    console.log("browser download url " + JSON.stringify(tarballUrl))
+    console.log("checksum " + JSON.stringify(sha256))
 
     const formula = template({
       version,
@@ -75,7 +77,9 @@ async function run() {
     })
 
     const formulaPath = resolve(formulaDir, `${packageName}.rb`)
+    console.log("formulaPath: " + formulaPath)
     const existingFormula = await pathExists(formulaPath) ? (await readFile(formulaPath)).toString() : ""
+    console.log("existingFormula: " + existingFormula)
 
     if (formula === existingFormula) {
       console.log("No changes to formula")
