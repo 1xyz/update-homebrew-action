@@ -50,11 +50,13 @@ async function run() {
     const templateString = (await readFile(fullTemplatePath)).toString()
     const template = handlebars.compile(templateString)
 
-    // get the metadata from GitHub
-    console.log("Preparing formula")
 
     // note: this excludes pre-releases
     const latestRelease = await octokit.request(`GET /repos/${srcRepo}/releases/latest`)
+    console.log(`${latestRelease}.`);
+    console.log("dumping latest release")
+
+    console.log(JSON.stringify(latestRelease))
 
     const version = latestRelease.data.tag_name
     const releaseId = latestRelease.data.id
