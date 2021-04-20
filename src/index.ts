@@ -53,10 +53,6 @@ async function run() {
 
     // note: this excludes pre-releases
     const latestRelease = await octokit.request(`GET /repos/${srcRepo}/releases/latest`)
-    console.log(`${latestRelease}.`);
-    console.log("dumping latest release")
-
-    console.log(JSON.stringify(latestRelease))
 
     const version = latestRelease.data.tag_name
     const releaseId = latestRelease.data.id
@@ -64,10 +60,6 @@ async function run() {
     const assets = await octokit.request(`GET /repos/${srcRepo}/releases/${releaseId}/assets`)
 
     // tarballUrl or zip URL
-    console.log("....#1")
-    console.log(`${assets}.`);
-    console.log("dumping assets")
-    console.log(JSON.stringify(assets))
     const tarballUrl = find(assets.data, a => a.name.includes("darwin")).browser_download_url
     const sha256 = await getUrlChecksum(tarballUrl, "sha256")
 
