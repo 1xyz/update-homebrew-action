@@ -62,7 +62,10 @@ async function run() {
     const assets = await octokit.request(`GET /repos/${srcRepo}/releases/${releaseId}/assets`)
 
     // tarballUrl or zip URL
-    console.log(assets)
+    console.log("....#1")
+    console.log(`${assets}.`);
+    console.log("dumping assets")
+    console.log(JSON.stringify(assets))
     const tarballUrl = find(assets.data, a => a.name.includes("darwin")).browser_download_url
     const sha256 = await getUrlChecksum(tarballUrl, "sha256")
 
